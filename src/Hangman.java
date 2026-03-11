@@ -17,8 +17,8 @@ public class Hangman {
     public static char[] maskedWord;
     public static List<Character> knownLetters = new ArrayList<>();
 
-        if (isGameStart()) {  //Проверка старта игры
     public static void main(String[] args) {
+        if (isGameStart()) {
             while (true) {
                 word = chooseRandomWord();
                 maskedWord = maskWord(word);
@@ -37,9 +37,9 @@ public class Hangman {
         rightLetters = 0;
         mistakes = 0;
         while (mistakes != MAX_MISTAKES && hasHiddenLetters(maskedWord)) {
-            printStateOfWord(maskedWord);                                       //Выводится Загаданное слово:****
-            HangmanPrint.drawHangman(mistakes);                                 //Выводится виселица
-            char attemptLetter = enterLetter();                                 //Просит ввести букву и проверяет ее на корректность
+            printStateOfWord(maskedWord);
+            HangmanPrint.drawHangman(mistakes);
+            char attemptLetter = enterLetter();
             if (!isLetterUsedEarlier(attemptLetter)) {
                 if (isLetterInWord(attemptLetter)) {
                     rightLetters++;
@@ -83,15 +83,15 @@ public class Hangman {
         }
     }
 
-    public static String chooseRandomWord() { //Метод достает из массива рандомное слово
+    public static String chooseRandomWord() {
         String [] words = readFile().toArray(new String[0]);
         return words[new Random().nextInt(words.length)];
     }
 
     public static char[] maskWord(String randomWord) {
-        char[] charArrayWord = randomWord.toCharArray();  // превращаем слово в массив char
-        Arrays.fill(charArrayWord, '*');                  // заполняем весь массив звёздочками
-        return charArrayWord;                              // возвращаем массив
+        char[] charArrayWord = randomWord.toCharArray();
+        Arrays.fill(charArrayWord, '*');
+        return charArrayWord;
     }
 
     public static boolean hasHiddenLetters(char[] maskedWord) {
@@ -125,7 +125,7 @@ public class Hangman {
     }
 
     public static void openLetter(char letter) {
-        char[] charArrayWord = word.toCharArray(); //   в а р ш а в а
+        char[] charArrayWord = word.toCharArray();
         for (int i = 0; i < charArrayWord.length; i++) {
             if (charArrayWord[i] == letter) {
                 maskedWord[i] = letter;
