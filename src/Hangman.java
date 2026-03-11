@@ -51,7 +51,7 @@ public class Hangman {
                 }
             }
             System.out.println();
-            showUsedLetters(attemptLetter);
+            showUsedLetters();
         }
     }
 
@@ -120,7 +120,7 @@ public class Hangman {
         }
     }
 
-    public static void showUsedLetters(char attemptLetter) {
+    public static void showUsedLetters() {
         System.out.println("Использованные буквы " + knownLetters);
     }
 
