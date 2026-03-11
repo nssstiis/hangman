@@ -17,8 +17,8 @@ public class Hangman {
     public static char[] maskedWord;
     public static List<Character> knownLetters = new ArrayList<>();
 
-    public static void main() {
         if (isGameStart()) {  //Проверка старта игры
+    public static void main(String[] args) {
             while (true) {
                 word = chooseRandomWord();
                 maskedWord = maskWord(word);
