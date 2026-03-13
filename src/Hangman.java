@@ -8,7 +8,6 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Hangman {
-
     public static final int MAX_MISTAKES = 6;
     public static final String PLAY = "играть";
     public static final String EXIT = "выйти";
