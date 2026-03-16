@@ -87,8 +87,10 @@ public class Hangman {
         try {
             return Files.readAllLines(Path.of("words.txt"));
         } catch (IOException e) {
-            System.out.println("Не удалось прочитать файл");
-            return new ArrayList<>();
+            System.out.println("Не удалось прочитать файл, возникла ошибка:" + e.getMessage());
+            System.out.println("Работа программы будет прекращена :(");
+            System.exit(1);
+            return null;
         }
     }
 
