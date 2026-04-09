@@ -45,13 +45,13 @@ public class Hangman {
         mistakes = 0;
 
         while (mistakes != MAX_MISTAKES && hasHiddenLetters(maskedWord)) {
-            printStateOfWord(maskedWord);
-            HangmanPrint.drawHangman(mistakes);
+            printWordState(maskedWord);
+            HangmanPrinter.draw(mistakes);
 
-            char attemptLetter = enterLetter();
+            char attemptLetter = inputLetter();
 
-            if (!isLetterUsedEarlier(attemptLetter)) {
-                if (isLetterInWord(attemptLetter)) {
+            if (!isUsedLetter(attemptLetter)) {
+                if (containsLetter(attemptLetter)) {
                     rightLetters++;
                     System.out.println("Такая буква есть!");
                     openLetter(attemptLetter);
@@ -100,12 +100,12 @@ public class Hangman {
     }
 
     public static char[] maskWord(String randomWord) {
-        char[] charArrayWord = randomWord.toCharArray();
-        Arrays.fill(charArrayWord, '*');
-        return charArrayWord;
+        char[] wordLetters = randomWord.toCharArray();
+        Arrays.fill(wordLetters, '*');
+        return wordLetters;
     }
 
-    public static void printStateOfWord(char[] maskedWord) {
+    public static void printWordState(char[] maskedWord) {
         System.out.print("Загаданное слово: ");
 
         for (char symbol : maskedWord) {
@@ -114,7 +114,7 @@ public class Hangman {
         System.out.println();
     }
 
-    public static char enterLetter() {
+    public static char inputLetter() {
         System.out.print("Введите букву: ");
 
         while (true) {
@@ -136,7 +136,7 @@ public class Hangman {
         }
     }
 
-    public static boolean isLetterUsedEarlier(char letter) {
+    public static boolean isUsedLetter(char letter) {
         if (knownLetters.contains(letter)) {
             System.out.println("Буква " + "'" + letter + "'" + " была введена ранее, введите другую букву");
             return true;
@@ -146,15 +146,15 @@ public class Hangman {
             return false;
         }
     }
-    private static boolean isLetterInWord(char attemptLetter) {
+    private static boolean containsLetter(char attemptLetter) {
         return word.indexOf(attemptLetter) != -1;
     }
 
     public static void openLetter(char letter) {
-        char[] charArrayWord = word.toCharArray();
+        char[] wordLetters = word.toCharArray();
 
-        for (int i = 0; i < charArrayWord.length; i++) {
-            if (charArrayWord[i] == letter) {
+        for (int i = 0; i < wordLetters.length; i++) {
+            if (wordLetters[i] == letter) {
                 maskedWord[i] = letter;
             }
         }
@@ -176,11 +176,11 @@ public class Hangman {
 
     public static void handleGameResults() {
         if (!hasHiddenLetters(maskedWord)) {
-            HangmanPrint.drawHangman(mistakes);
-            printStateOfWord(maskedWord);
+            HangmanPrinter.draw(mistakes);
+            printWordState(maskedWord);
             System.out.println("Вы выиграли :)");
         } else {
-            HangmanPrint.drawHangman(mistakes);
+            HangmanPrinter.draw(mistakes);
             System.out.println("Вы проиграли :( Загаданным словом было: " + word);
         }
     }
