@@ -8,17 +8,16 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Hangman {
-    public static final int MAX_MISTAKES = 6;
-    public static final String PLAY = "1";
-    public static final String EXIT = "0";
+    private static final int MAX_MISTAKES = 6;
+    private static final String PLAY = "y";
+    private static final String EXIT = "n";
 
-    public static int rightLetters;
-    public static int mistakes;
-    public static char[] maskedWord;
-    public static String word;
-    public static List<Character> knownLetters = new ArrayList<>();
+    private static int mistakes;
+    private static char[] maskedWord;
+    private static String word;
+    private static final List<Character> knownLetters = new ArrayList<>();
 
-    public static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
         if (isGameStart()) {
@@ -38,8 +37,7 @@ public class Hangman {
         }
     }
 
-    public static void loopGame(char[] maskedWord) {
-        rightLetters = 0;
+    private static void loopGame(char[] maskedWord) {
         mistakes = 0;
 
         while (mistakes != MAX_MISTAKES && hasHiddenLetters(maskedWord)) {
@@ -50,7 +48,6 @@ public class Hangman {
 
             if (!isUsedLetter(attemptLetter)) {
                 if (containsLetter(attemptLetter)) {
-                    rightLetters++;
                     System.out.println("Такая буква есть!");
                     openLetter(attemptLetter);
                 } else {
@@ -64,9 +61,8 @@ public class Hangman {
         }
     }
 
-    public static boolean isGameStart() {
-        System.out.println("Чтобы начать новую игру, введите (" + PLAY + "); Чтобы покинуть игру, введите (" + EXIT + ")");
-
+    private static boolean isGameStart() {
+        System.out.printf("Чтобы начать новую игру введите (%s); Чтобы покинуть игру, введите (%s) %n", PLAY, EXIT);
         while (true) {
             String validationStart = scanner.nextLine();
 
@@ -81,7 +77,7 @@ public class Hangman {
         }
     }
 
-    public static List<String> readFile() {
+    private static List<String> readFile() {
         try {
             return Files.readAllLines(Path.of("words.txt"));
         } catch (IOException e) {
@@ -92,18 +88,19 @@ public class Hangman {
         }
     }
 
-    public static String chooseRandomWord() {
-        String[] words = readFile().toArray(new String[0]);
-        return words[new Random().nextInt(words.length)];
+    private static String chooseRandomWord() {
+        List<String> words = readFile();
+        int randomIndex = new Random().nextInt(words.size());
+        return words.get(randomIndex);
     }
 
-    public static char[] maskWord(String randomWord) {
+    private static char[] maskWord(String randomWord) {
         char[] wordLetters = randomWord.toCharArray();
         Arrays.fill(wordLetters, '*');
         return wordLetters;
     }
 
-    public static void printWordState(char[] maskedWord) {
+    private static void printWordState(char[] maskedWord) {
         System.out.print("Загаданное слово: ");
 
         for (char symbol : maskedWord) {
@@ -112,7 +109,7 @@ public class Hangman {
         System.out.println();
     }
 
-    public static char inputLetter() {
+    private static char inputLetter() {
         System.out.print("Введите букву: ");
 
         while (true) {
@@ -134,21 +131,20 @@ public class Hangman {
         }
     }
 
-    public static boolean isUsedLetter(char letter) {
+    private static boolean isUsedLetter(char letter) {
         if (knownLetters.contains(letter)) {
-            System.out.println("Буква " + "'" + letter + "'" + " была введена ранее, введите другую букву");
+            System.out.printf("Буква %c была введена ранее, введите другую букву %n", letter);
             return true;
-
-        } else {
-            knownLetters.add(letter);
-            return false;
         }
+        knownLetters.add(letter);
+        return false;
     }
+
     private static boolean containsLetter(char attemptLetter) {
         return word.indexOf(attemptLetter) != -1;
     }
 
-    public static void openLetter(char letter) {
+    private static void openLetter(char letter) {
         char[] wordLetters = word.toCharArray();
 
         for (int i = 0; i < wordLetters.length; i++) {
@@ -158,11 +154,11 @@ public class Hangman {
         }
     }
 
-    public static void showUsedLetters() {
+    private static void showUsedLetters() {
         System.out.println("Использованные буквы " + knownLetters);
     }
 
-    public static boolean hasHiddenLetters(char[] maskedWord) {
+    private static boolean hasHiddenLetters(char[] maskedWord) {
         for (char symbol : maskedWord) {
             if (symbol == '*') {
                 return true;
@@ -172,7 +168,7 @@ public class Hangman {
         return false;
     }
 
-    public static void handleGameResults() {
+    private static void handleGameResults() {
         if (!hasHiddenLetters(maskedWord)) {
             HangmanPrinter.draw(mistakes);
             printWordState(maskedWord);
@@ -183,8 +179,8 @@ public class Hangman {
         }
     }
 
-    public static boolean isGameRestart() {
-        System.out.println("Хотите начать игру заново? " + "Да - " + PLAY + "; Нет - " + EXIT);
+    private static boolean isGameRestart() {
+        System.out.printf("Хотите начать игру заново? Да - %s; Нет - %s %n", PLAY, EXIT);
         while (true) {
             String validationRestart = scanner.nextLine();
 
@@ -194,7 +190,7 @@ public class Hangman {
                 case EXIT:
                     return false;
                 default:
-                    System.out.println("Некорректный ввод! Введите " + PLAY + " или " + EXIT);
+                    System.out.printf("Некорректный ввод! Введите %s или %s %n", PLAY, EXIT);
             }
         }
     }
